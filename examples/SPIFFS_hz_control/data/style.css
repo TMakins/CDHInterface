@@ -1,0 +1,223 @@
+@font-face {
+    font-family: 'open sans';
+    src: url('opensans-light-webfont.woff2') format('woff2'),
+         url('opensans-light-webfont.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'open sans';
+    src: url('opensans-regular-webfont.woff2') format('woff2'),
+         url('opensans-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+html, body {
+  margin: 0;
+  background: #fdfdfd;
+  font-family: "Open Sans", sans-serif;
+  overflow-x: hidden;
+}
+
+main {
+	max-width: 500px;
+	margin: 0 auto;
+}
+
+h1 {
+	font-size: 40px;
+	color: #676767;
+	text-align: center;
+	font-weight: 300;
+}
+
+.controller {
+	top: 320px;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 50%;
+    border-color: #ff0000;
+    box-shadow: 0 0 15px #ff0000;
+}
+
+.controller.turningon,
+.controller.turningoff {
+    border-color: #FFA500;
+    box-shadow: 0 0 15px #FFA500;
+}
+
+.controller.on {
+    border-color: #00ff00;
+    box-shadow: 0 0 15px #00ff00;
+}
+
+.controller .centre .pump_hz, 
+.controller .centre, 
+.controller .bar {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 50%;
+}
+
+.controller {
+  position: absolute;
+  width: 412px;
+  height: 412px;
+  background: #4a474c;
+}
+
+.controller .bar {
+  position: absolute;
+  width: 356px;
+  height: 356px;
+}
+
+.controller .bar .inner_bar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 344px;
+  height: 344px;
+  margin-left: -172px;
+  margin-top: -172px;
+  border-radius: 100%;
+  background-color: #4a474c;
+  z-index: 4;
+}
+
+.controller .bar .inner_bar:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 40px solid transparent;
+  border-left: 100px solid transparent;
+  border-right: 100px solid transparent;
+  border-bottom: 150px solid #4a474c;
+  bottom: -7px;
+  left: 50%;
+  transform: translatex(-50%);
+}
+
+.controller .bar .hold {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  clip: rect(0px, 356px, 356px, 178px);
+  border-radius: 100%;
+  background-color: #d8d8d8;
+}
+.controller .bar .fill {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  clip: rect(0px, 178px, 356px, 0px);
+}
+.controller .bar .fill1 {
+  background: linear-gradient(180deg, #ff4000 0%, #ff8000 100%); 
+  -webkit-linear-gradient(top, #ff4000 00%, #ff8000 100%);
+}
+
+.controller .bar .fill2 {
+  background: linear-gradient(180deg, #ff8000 0%, #ffbf00 100%); 
+  background: -webkit-linear-gradient(top, #ff8000 0%, #ffbf00 100%);
+}
+.controller .bar .right {
+  z-index: 3;
+  transform: rotate(180deg);
+}
+.controller .bar .right .fill {
+  z-index: 3;
+  transform: rotate(180deg);
+  -webkit-animation: right 1s linear both;
+          animation: right 1s linear both;
+  transition: transform 0.6s;
+}
+.controller .bar .left .fill {
+  z-index: 1;
+  -webkit-animation: left 0.3s linear both;
+          animation: left 0.3s linear both;
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+  transition: transform 0.6s;
+}
+.controller .bar span {
+  width: 356px;
+  font-weight: 400;
+  position: absolute;
+  bottom: 0px;
+  text-align: center;
+  font-size: 15px;
+  text-transform: uppercase;
+  color: #d8d8d8;
+  z-index: 10;
+}
+.controller .centre {
+  position: absolute;
+  width: 290px;
+  height: 290px;
+  background: #fff;
+  -webkit-animation: bound-in 0.6s ease forwards;
+          animation: bound-in 0.6s ease forwards;
+}
+
+.controller .centre .pump_hz {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  text-align: center;
+}
+
+.controller .centre .pump_hz .value {
+  line-height: 150px;
+  font-size: 40px;
+  color: #676767;
+  font-weight: 300;
+}
+
+.controller .body_temp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateZ(10deg);
+  width: 40px;
+  height: 96%;
+  text-align: center;
+}
+.controller .body_temp .value {
+  font-size: 14px;
+  color: #d8d8d8;
+  font-weight: 500;
+}
+
+.arrows {
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	position: relative;
+}
+
+.arrows .plus {
+	position: absolute;
+	top: 80px;
+	left: 156px; /* (412 - 100) / 2 */
+	height: 100px;
+	width: 100px;
+	background: url(keyboard_arrow_up-24px.svg) no-repeat center center;
+}
+
+.arrows .minus {
+	position: absolute;
+	bottom: 80px;
+	left: 156px; /* (412 - 100) / 2 */
+	height: 100px;
+	width: 100px;
+	background: url(keyboard_arrow_down-24px.svg) no-repeat center center;
+}
