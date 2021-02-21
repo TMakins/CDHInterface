@@ -46,8 +46,8 @@ h1 {
 
 .controller.turningon,
 .controller.turningoff {
-    border-color: #FFA500;
-    box-shadow: 0 0 15px #FFA500;
+    border-color: #FFA500 !important; /* important to override on/off */
+    box-shadow: 0 0 15px #FFA500 !important; /* important to override on/off */
 }
 
 .controller.on {
