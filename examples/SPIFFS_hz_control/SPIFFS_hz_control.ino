@@ -49,7 +49,7 @@ WebServer server(80);
 const float MIN_HZ = 1.6;
 const float MAX_HZ = 5.5;
 const uint16_t MIN_FAN_SPEED = 1680; 
-const uint16_t MAX_FAN_SPEED = 3500;
+const uint16_t MAX_FAN_SPEED = 5000;
 
 float cur_hz = 2.2;
 
