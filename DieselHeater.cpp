@@ -54,6 +54,14 @@
 #define REQUESTED_PUMP_HZ_REG_ADDR	31
 #define ERROR_CODE_REG_ADDR			32
 #define LAST_ERROR_REG_ADDR			33
+#define CONFIG_A_REG_ADDR			34
+#define STATUS_A_REG_ADDR			35
+
+// Status A register, currently just has a ready bit
+#define STATUS_A_READY	0 // bit position for ready bit in status register
+
+// Config A register
+#define CONFIG_A_UPDATE_SETTINGS	0 // bit position for enabling/disabling setting config (see method below)
 
 const char* run_state_strs[] = {
 	"Stopped",
@@ -81,10 +89,19 @@ const char* error_state_strs[] = {
 	"Disconnected"
 };
 
-DieselHeater::DieselHeater(TwoWire *wire)
+DieselHeater::DieselHeater()
 {
+}
+
+void DieselHeater::init(TwoWire *wire)
+{
+	// Wait long enough to be certain the interface board is running
+	delay(100);
+	// Init I2C
 	_twi = wire;
 	_twi->begin();
+	// Wait for status bit just to make sure
+	while(!interfaceReady());
 }
 
 /*
@@ -236,6 +253,22 @@ uint8_t DieselHeater::getGlowPlugPower()
 	return _readTwiRegU8(GP_POWER_REG_ADDR);
 }
 
+// Causes the CDH interface to mimic a rotary controller, and hence any settings (pump and fan) are ignored
+// This is handy if you don't want to temporarily use the CDH interface without overwriting your current settings
+void DieselHeater::disableSettingsUpdates()
+{
+	uint8_t currentReg = _readTwiRegU8(CONFIG_A_REG_ADDR);
+	_writeTwiRegU16(CONFIG_A_REG_ADDR, currentReg | (1 << CONFIG_A_UPDATE_SETTINGS));
+}
+
+// Causes the CDH interface to mimic a rotary controller, and hence any settings (pump and fan) are ignored
+// This is handy if you don't want to temporarily use the CDH interface without overwriting your current settings
+void DieselHeater::enableSettingsUpdates()
+{
+	uint8_t currentReg = _readTwiRegU8(CONFIG_A_REG_ADDR);
+	_writeTwiRegU16(CONFIG_A_REG_ADDR, currentReg & ~(1 << CONFIG_A_UPDATE_SETTINGS));
+}
+
 /*
  * Read methods
  */
@@ -345,6 +378,15 @@ const char *DieselHeater::getErrorDesc()
 		state = DISCONNECTED;
 	
 	return(error_state_strs[state]);
+}
+
+/*
+ * Other methods
+ */
+ 
+uint8_t DieselHeater::interfaceReady()
+{
+	return _readTwiRegU8(STATUS_A_REG_ADDR) & (1 << STATUS_A_READY);
 }
 
 /*

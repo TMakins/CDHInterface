@@ -56,6 +56,7 @@ float cur_hz = 2.2;
 void setup() {
   Serial.begin(115200);
 
+  heater.init();
   heater.setMinPumpHz(MIN_HZ);
   heater.setMaxPumpHz(MAX_HZ);
   heater.setMinFanSpeed(MIN_FAN_SPEED);

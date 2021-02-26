@@ -32,6 +32,7 @@
 DieselHeater heater;
 
 void setup() {
+  heater.init();
   // IMPORTANT - THESE MAY NOT BE CORRECT FOR YOUR HEATER
   // Change these to your current heater settings
   heater.setMinPumpHz(1.6);

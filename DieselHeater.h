@@ -58,7 +58,9 @@ typedef enum error_state {
 class DieselHeater
 {
 	public:
-		DieselHeater(TwoWire *wire = &Wire);
+		DieselHeater();
+		void init(TwoWire *wire = &Wire);
+		
 		// Control methods
 		void turnOn();
 		void turnOff();
@@ -89,6 +91,9 @@ class DieselHeater
 		float getOpVoltage();
 		uint8_t getFanMagnets();
 		uint8_t getGlowPlugPower();
+		
+		void disableSettingsUpdates();
+		void enableSettingsUpdates(); // Note: default on power up
 
 		// Read methods
 		uint8_t getHtrState();
@@ -107,6 +112,9 @@ class DieselHeater
 		bool hasError();
 		error_state_t getErrorState();
 		const char *getErrorDesc();
+		
+		// Other methods
+		uint8_t interfaceReady();
 	
 	protected:
 		TwoWire *_twi;
