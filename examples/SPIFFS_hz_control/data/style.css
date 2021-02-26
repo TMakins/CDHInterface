@@ -121,20 +121,21 @@ h1 {
   clip: rect(0px, 178px, 356px, 0px);
 }
 .controller .bar .fill1 {
-  background: linear-gradient(180deg, #ff4000 0%, #ff8000 100%); 
-  -webkit-linear-gradient(top, #ff4000 00%, #ff8000 100%);
+  background: #ff4000;
 }
 
 .controller .bar .fill2 {
-  background: linear-gradient(180deg, #ff8000 0%, #ffbf00 100%); 
-  background: -webkit-linear-gradient(top, #ff8000 0%, #ffbf00 100%);
+  background: linear-gradient(180deg, #ff4000 20%, #ffbf00 100%); 
+  -webkit-linear-gradient(top, #ff4000 20%, #ffbf00 100%);
 }
 .controller .bar .right {
-  z-index: 3;
+  z-index: 2;
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
   transform: rotate(180deg);
 }
 .controller .bar .right .fill {
-  z-index: 3;
+  z-index: 2;
   transform: rotate(180deg);
   -webkit-animation: right 1s linear both;
           animation: right 1s linear both;

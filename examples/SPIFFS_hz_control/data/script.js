@@ -1,13 +1,14 @@
-var max_val = 160;
 var min_val = 0;
-var max_deg = 340;
+var max_val = 200;
 var min_deg = 20;
+var max_deg = 340;
 var max_hz;
 var min_hz;
 var cur_hz;
 var heater_on;
 var run_state;
-var body_temp;
+var body_temp = 0;
+var refresh_interval = 2000; // ms
 
 
 $(document).ready(function(){	
@@ -29,7 +30,7 @@ $(document).ready(function(){
 	
 	update_body_temp_guage();
 	
-	var timeout_interval = setInterval(function() {refresh_controller();}, 5000);
+	var timeout_interval = setInterval(function() {refresh_controller();}, refresh_interval);
 	
 	var on_off_timeout;
 	$(".controller").click(function(e) {  
@@ -39,7 +40,7 @@ $(document).ready(function(){
 			clearTimeout(on_off_timeout); // Clear first in case we get a few presses within 3s
 			on_off_timeout = setTimeout(function() {delay_on();}, 3000); // allow 3 seconds to be turned off again, in case it's accidental - the heater isn't so forgiving!
 			clearInterval(timeout_interval); // Clear and reset refresh interval, so it doesn't interrupt the above
-			timeout_interval = setInterval(function() {refresh_controller();}, 5000);
+			timeout_interval = setInterval(function() {refresh_controller();}, refresh_interval);
 		}
 		else if($(this).hasClass("turningon")){
 			$(this).removeClass("turningon");
@@ -51,7 +52,7 @@ $(document).ready(function(){
 			clearTimeout(on_off_timeout); // Clear first in case we get a few presses within 3s
 			on_off_timeout = setTimeout(function() {delay_off();}, 3000); // allow 3 seconds to be turned off again, in case it's accidental - the heater isn't so forgiving!
 			clearInterval(timeout_interval); // Clear and reset refresh interval, so it doesn't interrupt the above
-			timeout_interval = setInterval(function() {refresh_controller();}, 5000);
+			timeout_interval = setInterval(function() {refresh_controller();}, refresh_interval);
 		}
 		else if($(this).hasClass("turningoff")){
 			$(this).removeClass("turningoff");
@@ -82,12 +83,9 @@ $(document).ready(function(){
 	});
 });
 
-
-function scale(num, in_min, in_max, out_min, out_max) {
-  return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
-
 function refresh_controller(){
+	body_temp += 10;
+	
 	$('#heater_vars').load(location.href + " #heater_vars", function( response, status, xhr ) {
 		run_state = $("#run_state").val();
 		$("#run_state_disp").text(run_state);
@@ -124,19 +122,25 @@ function delay_off() {
 }
 
 function update_body_temp_guage() {
-	if(body_temp < min_val)
-		body_temp = min_val;
-	if(body_temp > max_val)
-		body_temp = max_val;
+	$(".body_temp .num").text(body_temp);
 	
-	$(".body_temp").css("transform", "translate(-50%, -50%) rotate("+ (-180 + scale(body_temp, min_val, max_val, min_deg, max_deg))+"deg)");
+	var body_temp_val = body_temp;
+	if(body_temp < min_val)
+		body_temp_val = min_val;
+	if(body_temp > max_val)
+		body_temp_val = max_val;
+	
+	$(".body_temp").css("transform", "translate(-50%, -50%) rotate("+ (-180 + scale(body_temp_val, min_val, max_val, min_deg, max_deg))+"deg)");
 	$(".fill").css("animation", "none");
 
-	if(body_temp >= ((max_val - min_val) / 2)){
-		$(".fill1").css("transform", "rotate("+ (scale(body_temp, min_val, max_val, min_deg, max_deg) - 180) +"deg)").css("transition-delay", "0s");
+	if(body_temp_val >= ((max_val - min_val) / 2)){
+		$(".fill1").css("transform", "rotate("+ (scale(body_temp_val, min_val, max_val, min_deg, max_deg) - 180) +"deg)").css("transition-delay", "0s");
+		$(".fill2").css("transform", "rotate(180deg)").css("transition-delay", "0s");
 	}else{
-		$(".fill2").css("transform", "rotate("+ scale(body_temp, min_val, max_val, min_deg, max_deg) +"deg)").css("transition-delay", "0s");
+		$(".fill2").css("transform", "rotate("+ scale(body_temp_val, min_val, max_val, min_deg, max_deg) +"deg)").css("transition-delay", "0s");
 	}
-	
-	$(".body_temp .num").text(body_temp);
+}
+
+function scale(num, in_min, in_max, out_min, out_max) {
+  return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
