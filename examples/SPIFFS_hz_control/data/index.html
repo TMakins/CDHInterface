@@ -1,51 +1,51 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="initial-scale=1.0, maximum-scale=0.8, user-scalable=no" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=0.8, user-scalable=no" />
 
-	<title>Diesel Heater Control</title>
+    <title>Diesel Heater Control</title>
 
-	<link rel="stylesheet" href="style.css">
-	<script src="jquery.js"></script>
-	<script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="jquery.js"></script>
+    <script src="script.js"></script>
 </head>
 
 <body>
-	<main>
-		<h1>Heater Controller</h1>
-		<div class="controller off">
-			<div class="bar">
-				<div class="inner_bar"></div>
-				<div class='hold left'>
-				<div class='fill fill1'></div>
-			</div>
-			<div class='hold right'>
-				<div class='fill fill2'></div>
-			</div>
-				<span id="run_state_disp">LOADING...</span>
-			</div>
-			<div class="body_temp">
-				<span class="value"><span class="num">20</span>°C</span>
-			</div>
-			<div class="centre">
-				<div class="pump_hz">
-					<span class="value"><span class="num">1.6</span>Hz</span>
-				</div>
-			</div>
-			<div class="arrows">
-				<div class="arrow minus"></div>
-				<div class="arrow plus"></div>
-			</div>
-		</div>
-	</main>
-	<div id="heater_vars">
-		<input type="hidden" id="max_hz" value="%%MAX_HZ%%">
-		<input type="hidden" id="min_hz" value="%%MIN_HZ%%">
-		<input type="hidden" id="cur_hz" value="%%CUR_HZ%%">
-		<input type="hidden" id="on_off" value="%%ON_OFF%%">
-		<input type="hidden" id="run_state" value="%%RUN_STATE%%">
-		<input type="hidden" id="body_temp" value="%%BODY_TEMP%%">
-	</div>
+    <main>
+        <h1>Heater Controller</h1>
+        <div class="controller off">
+            <div class="bar">
+                <div class="inner_bar"></div>
+                <div class='hold left'>
+                <div class='fill fill1'></div>
+            </div>
+            <div class='hold right'>
+                <div class='fill fill2'></div>
+            </div>
+                <span id="run_state_disp">LOADING...</span>
+            </div>
+            <div class="body_temp">
+                <span class="value"><span class="num">20</span>°C</span>
+            </div>
+            <div class="centre">
+                <div class="pump_hz">
+                    <span class="value"><span class="num">1.6</span>Hz</span>
+                </div>
+            </div>
+            <div class="arrows">
+                <div class="arrow minus"></div>
+                <div class="arrow plus"></div>
+            </div>
+        </div>
+    </main>
+    <div id="heater_vars">
+        <input type="hidden" id="max_hz" value="%%MAX_HZ%%">
+        <input type="hidden" id="min_hz" value="%%MIN_HZ%%">
+        <input type="hidden" id="cur_hz" value="%%CUR_HZ%%">
+        <input type="hidden" id="on_off" value="%%ON_OFF%%">
+        <input type="hidden" id="run_state" value="%%RUN_STATE%%">
+        <input type="hidden" id="body_temp" value="%%BODY_TEMP%%">
+    </div>
 </body>
 </html>
