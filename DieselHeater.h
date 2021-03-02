@@ -83,7 +83,8 @@ class DieselHeater
         void setFanMagnets1();
         void setFanMagnets2();
         void setGlowPlugPower(uint8_t power);
-        
+		
+        uint8_t getRequestedState();
         float getMinPumpHz();
         float getMaxPumpHz();
         uint8_t getMinFanSpeed();

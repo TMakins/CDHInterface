@@ -24,24 +24,30 @@ html, body {
 }
 
 main {
-    max-width: 500px;
-    margin: 0 auto;
+	max-width: 500px;
+	margin: 0 auto;
 }
 
 h1 {
-    font-size: 40px;
-    color: #676767;
-    text-align: center;
-    font-weight: 300;
+	font-size: 40px;
+	color: #676767;
+	text-align: center;
+	font-weight: 300;
 }
 
 .controller {
-    top: 320px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
+	position: relative;
+	width: 412px;
+	height: 412px;
+	background: #4a474c;
+	left: 50%;
+	top: 206px;
+	transform: translate(-50%, -50%);
+	border-radius: 50%;
     border-color: #ff0000;
     box-shadow: 0 0 15px #ff0000;
+	display: block;
+	margin: 40px 0;
 }
 
 .controller.turningon,
@@ -58,17 +64,10 @@ h1 {
 .controller .centre .pump_hz, 
 .controller .centre, 
 .controller .bar {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-}
-
-.controller {
-  position: absolute;
-  width: 412px;
-  height: 412px;
-  background: #4a474c;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 50%;
 }
 
 .controller .bar {
@@ -199,26 +198,26 @@ h1 {
 }
 
 .arrows {
-    height: 100%;
-    width: 100%;
-    text-align: center;
-    position: relative;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	position: relative;
 }
 
 .arrows .plus {
-    position: absolute;
-    top: 80px;
-    left: 156px; /* (412 - 100) / 2 */
-    height: 100px;
-    width: 100px;
-    background: url(keyboard_arrow_up-24px.svg) no-repeat center center;
+	position: absolute;
+	top: 80px;
+	left: 156px; /* (412 - 100) / 2 */
+	height: 100px;
+	width: 100px;
+	background: url(keyboard_arrow_up-24px.svg) no-repeat center center;
 }
 
 .arrows .minus {
-    position: absolute;
-    bottom: 80px;
-    left: 156px; /* (412 - 100) / 2 */
-    height: 100px;
-    width: 100px;
-    background: url(keyboard_arrow_down-24px.svg) no-repeat center center;
+	position: absolute;
+	bottom: 80px;
+	left: 156px; /* (412 - 100) / 2 */
+	height: 100px;
+	width: 100px;
+	background: url(keyboard_arrow_down-24px.svg) no-repeat center center;
 }

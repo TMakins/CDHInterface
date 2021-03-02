@@ -215,6 +215,11 @@ void DieselHeater::setGlowPlugPower(uint8_t power)
     _writeTwiRegU8(GP_POWER_REG_ADDR, power);
 }
 
+uint8_t DieselHeater::getRequestedState() 
+{
+    return _readTwiRegU16(STATE_REG_ADDR);
+}
+
 float DieselHeater::getMinPumpHz()
 {
     uint8_t res = _readTwiRegU8(MIN_PUMP_HZ_REG_ADDR);
@@ -280,12 +285,12 @@ uint8_t DieselHeater::getHtrState()
 
 bool DieselHeater::isOn()
 {
-    return (getHtrState() == 1);
+    return (getHtrState() == 2);
 }
  
 bool DieselHeater::isConnected()
 {
-    return (getHtrState() != 2);
+    return (getHtrState() != 0);
 }
 
 run_state_t DieselHeater::getRunState()
@@ -318,8 +323,7 @@ float DieselHeater::getFanVoltage()
 
 uint16_t DieselHeater::getFanSpeed()
 {
-    uint16_t res = _readTwiRegU16(FAN_SPEED_REG_ADDR);
-    return res; // 1 RPM / digit
+    return _readTwiRegU16(FAN_SPEED_REG_ADDR);
 }
 
 int16_t DieselHeater::getHeatExchangerTemp()

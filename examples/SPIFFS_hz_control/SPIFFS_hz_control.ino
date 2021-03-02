@@ -121,6 +121,18 @@ void handleRoot() {
   html.replace("%%ON_OFF%%", String(heater.isOn()));
   html.replace("%%RUN_STATE%%", (heater.hasError()) ? heater.getErrorDesc() : heater.getRunStateDesc());
   html.replace("%%BODY_TEMP%%", String(heater.getHeatExchangerTemp()));
+  
+  html.replace("%%ACT_MIN_HZ%%", String(heater.getMinPumpHz()));
+  html.replace("%%ACT_MAX_HZ%%", String(heater.getMaxPumpHz()));
+  html.replace("%%ACT_REQ_HZ%%", String(heater.getRequestedPumpHz()));
+  html.replace("%%ACT_HZ%%", String(heater.getCurrentPumpHz()));
+  html.replace("%%GP_CURRENT%%", String(heater.getGlowPlugCurrent()));
+  html.replace("%%GP_VOLTAGE%%", String(heater.getGlowPlugVoltage()));
+  html.replace("%%ACT_MAX_RPM%%", String(heater.getMaxFanSpeed()));
+  html.replace("%%ACT_MIN_RPM%%", String(heater.getMinFanSpeed()));
+  html.replace("%%FAN_SPEED%%", String(heater.getFanSpeed()));
+  html.replace("%%FAN_VOLTAGE%%", String(heater.getFanVoltage()));
+  html.replace("%%SUP_VOLTAGE%%", String(heater.getSupplyVoltage()));
   file.close();
   server.send(200, "text/html", html);
 }
