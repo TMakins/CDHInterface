@@ -173,12 +173,12 @@ void DieselHeater::setMaxPumpHz(float maxHz)
     _writeTwiRegU8(MAX_PUMP_HZ_REG_ADDR, (uint8_t)(maxHz * 10)); // 0.1hz / digit
 }
 
-void DieselHeater::setMinFanSpeed(uint8_t minRPM)
+void DieselHeater::setMinFanSpeed(uint16_t minRPM)
 {
     _writeTwiRegU16(MIN_FAN_SPEED_REG_ADDR, minRPM);
 }
 
-void DieselHeater::setMaxFanSpeed(uint8_t maxRPM)
+void DieselHeater::setMaxFanSpeed(uint16_t maxRPM)
 {
     _writeTwiRegU16(MAX_FAN_SPEED_REG_ADDR, maxRPM);
 }
@@ -263,7 +263,7 @@ uint8_t DieselHeater::getGlowPlugPower()
 void DieselHeater::disableSettingsUpdates()
 {
     uint8_t currentReg = _readTwiRegU8(CONFIG_A_REG_ADDR);
-    _writeTwiRegU16(CONFIG_A_REG_ADDR, currentReg | (1 << CONFIG_A_UPDATE_SETTINGS));
+    _writeTwiRegU8(CONFIG_A_REG_ADDR, currentReg | (1 << CONFIG_A_UPDATE_SETTINGS));
 }
 
 // Causes the CDH interface to mimic a rotary controller, and hence any settings (pump and fan) are ignored
@@ -271,7 +271,7 @@ void DieselHeater::disableSettingsUpdates()
 void DieselHeater::enableSettingsUpdates()
 {
     uint8_t currentReg = _readTwiRegU8(CONFIG_A_REG_ADDR);
-    _writeTwiRegU16(CONFIG_A_REG_ADDR, currentReg & ~(1 << CONFIG_A_UPDATE_SETTINGS));
+    _writeTwiRegU8(CONFIG_A_REG_ADDR, currentReg & ~(1 << CONFIG_A_UPDATE_SETTINGS));
 }
 
 /*

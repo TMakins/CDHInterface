@@ -76,8 +76,8 @@ class DieselHeater
         // Config methods
         void setMinPumpHz(float minHz);
         void setMaxPumpHz(float maxHz);
-        void setMinFanSpeed(uint8_t minRPM);
-        void setMaxFanSpeed(uint8_t maxRPM);
+        void setMinFanSpeed(uint16_t minRPM);
+        void setMaxFanSpeed(uint16_t maxRPM);
         void setOpVoltage12V();
         void setOpVoltage24V();
         void setFanMagnets1();
