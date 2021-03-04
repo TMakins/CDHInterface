@@ -8,7 +8,9 @@ var cur_hz;
 var heater_on;
 var run_state;
 var body_temp = 0;
-var refresh_interval = 2000; // ms
+
+const ON_OFF_DELAY = 3000; // ms
+const REFRESH_INTERVAL = 5000; // ms - keep this longer than ON_OFF_DELAY
 
 
 $(document).ready(function(){   
@@ -30,7 +32,7 @@ $(document).ready(function(){
     
     update_body_temp_guage();
     
-    var timeout_interval = setInterval(function() {refresh_controller();}, refresh_interval);
+    var timeout_interval = setInterval(function() {refresh_controller();}, REFRESH_INTERVAL);
     
     var on_off_timeout;
     $(".controller").click(function(e) {  
@@ -38,9 +40,9 @@ $(document).ready(function(){
             $(this).addClass("turningon");
             
             clearTimeout(on_off_timeout); // Clear first in case we get a few presses within 3s
-            on_off_timeout = setTimeout(function() {delay_on();}, 3000); // allow 3 seconds to be turned off again, in case it's accidental - the heater isn't so forgiving!
+            on_off_timeout = setTimeout(function() {delay_on();}, ON_OFF_DELAY); // allow 3 seconds to be turned off again, in case it's accidental - the heater isn't so forgiving!
             clearInterval(timeout_interval); // Clear and reset refresh interval, so it doesn't interrupt the above
-            timeout_interval = setInterval(function() {refresh_controller();}, refresh_interval);
+            timeout_interval = setInterval(function() {refresh_controller();}, REFRESH_INTERVAL);
         }
         else if($(this).hasClass("turningon")){
             $(this).removeClass("turningon");
@@ -50,9 +52,9 @@ $(document).ready(function(){
         if(heater_on && !$(this).hasClass("turningoff")){
             $(this).addClass("turningoff");
             clearTimeout(on_off_timeout); // Clear first in case we get a few presses within 3s
-            on_off_timeout = setTimeout(function() {delay_off();}, 3000); // allow 3 seconds to be turned off again, in case it's accidental - the heater isn't so forgiving!
+            on_off_timeout = setTimeout(function() {delay_off();}, ON_OFF_DELAY); // allow 3 seconds to be turned off again, in case it's accidental - the heater isn't so forgiving!
             clearInterval(timeout_interval); // Clear and reset refresh interval, so it doesn't interrupt the above
-            timeout_interval = setInterval(function() {refresh_controller();}, refresh_interval);
+            timeout_interval = setInterval(function() {refresh_controller();}, REFRESH_INTERVAL);
         }
         else if($(this).hasClass("turningoff")){
             $(this).removeClass("turningoff");
