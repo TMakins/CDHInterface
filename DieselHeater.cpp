@@ -232,14 +232,19 @@ float DieselHeater::getMaxPumpHz()
     return res / 10.0; // 0.1Hz / digit
 }
 
-uint8_t DieselHeater::getMinFanSpeed()
+uint16_t DieselHeater::getMinFanSpeed()
 {
     return _readTwiRegU16(MIN_FAN_SPEED_REG_ADDR);
 }
 
-uint8_t DieselHeater::getMaxFanSpeed()
+uint16_t DieselHeater::getMaxFanSpeed()
 {
     return _readTwiRegU16(MAX_FAN_SPEED_REG_ADDR);
+}
+
+uint16_t DieselHeater::getAltitude()
+{
+    return _readTwiRegU16(ALTITUDE_REG_ADDR);
 }
 
 float DieselHeater::getOpVoltage()

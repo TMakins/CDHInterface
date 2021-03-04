@@ -87,8 +87,9 @@ class DieselHeater
         uint8_t getRequestedState();
         float getMinPumpHz();
         float getMaxPumpHz();
-        uint8_t getMinFanSpeed();
-        uint8_t getMaxFanSpeed();
+        uint16_t getMinFanSpeed();
+        uint16_t getMaxFanSpeed();
+		uint16_t getAltitude();
         float getOpVoltage();
         uint8_t getFanMagnets();
         uint8_t getGlowPlugPower();
