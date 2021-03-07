@@ -33,12 +33,14 @@ typedef enum run_state {
     OFF = 0,
     STARTING,
     IGNITING,
-    RETRY_WAIT,
+    IGNITION_RETRY,
     RAMPING_UP,
     RUNNING,
     RAMPING_DOWN,
     STOPPING,
-    COOLDOWN
+    COOLDOWN,
+	PREHEAT,
+	UKNOWN_RUN_STATE,  // should always be last
 } run_state_t;
 
 typedef enum error_state {
@@ -51,8 +53,11 @@ typedef enum error_state {
     MOTOR_FAILURE,
     CONNECTION_LOST,
     FLAME_OUT,
-    TEMP_SENS_FAILURE, //heaters error codes end here
+    TEMP_SENS_FAILURE,
+	IGNITION_FAILURE, //heaters standard error codes end here
     DISCONNECTED,
+	PUMP_RUNAWAY,
+	UNKNOWN_ERROR, // should always be last
 } error_state_t;
 
 class DieselHeater
@@ -82,7 +87,7 @@ class DieselHeater
         void setOpVoltage24V();
         void setFanMagnets1();
         void setFanMagnets2();
-        void setGlowPlugPower(uint8_t power);
+        void setGlowPlugPower(uint8_t power); // range 1-6
 		
         uint8_t getRequestedState();
         float getMinPumpHz();
@@ -98,7 +103,6 @@ class DieselHeater
         void enableSettingsUpdates(); // Note: default on power up
 
         // Read methods
-        uint8_t getHtrState();
         bool isOn();
         bool isConnected();
         run_state_t getRunState();
@@ -114,9 +118,15 @@ class DieselHeater
         bool hasError();
         error_state_t getErrorState();
         const char *getErrorDesc();
+        error_state_t getLastErrorState();
+        const char *getLastErrorDesc();
+		
+        uint8_t getHtrState();
+		uint8_t getMode();
         
         // Other methods
         uint8_t interfaceReady();
+		uint8_t getLastResetReason();
     
     protected:
         TwoWire *_twi;

@@ -58,24 +58,26 @@
 #define STATUS_A_REG_ADDR           35
 
 // Status A register, currently just has a ready bit
-#define STATUS_A_READY  0 // bit position for ready bit in status register
+#define STATUS_A_READY  		0 // bit position for ready bit in status register
+#define STATUS_A_RESET_REASON	1 // bit position for 3 bits indicating last reset reason
 
 // Config A register
 #define CONFIG_A_UPDATE_SETTINGS    0 // bit position for enabling/disabling setting config (see method below)
 
-const char* run_state_strs[] = {
+const char* run_state_strs[UKNOWN_RUN_STATE] = {
     "Stopped",
     "Starting",
     "Igniting",
-    "Waiting",
+    "Retrying ignition",
     "Ramping up",
     "Running",
     "Ramping down",
     "Stopping",
-    "Cooldown"
+    "Cooldown",
+	"Preheating",
 };
 
-const char* error_state_strs[] = {
+const char* error_state_strs[UNKNOWN_ERROR] = {
     "No error",
     "Supply voltage too low",
     "Supply voltage too high",
@@ -86,8 +88,16 @@ const char* error_state_strs[] = {
     "Controller comms. error", 
     "Flame out",
     "Temperature sensor failure",
-    "Disconnected"
+    "Ignition failure",
+    "Disconnected",
+	"Pump runaway"
 };
+
+enum heater_states = {
+	HTR_DISCONNECTED,
+	HTR_OFF,
+	HTR_ON,
+}
 
 DieselHeater::DieselHeater()
 {
@@ -282,20 +292,15 @@ void DieselHeater::enableSettingsUpdates()
 /*
  * Read methods
  */
- 
-uint8_t DieselHeater::getHtrState()
- {
-    return _readTwiRegU8(HTR_STATE_REG_ADDR);
- }
 
 bool DieselHeater::isOn()
 {
-    return (getHtrState() == 2);
+    return (getHtrState() == HTR_ON);
 }
  
 bool DieselHeater::isConnected()
 {
-    return (getHtrState() != 0);
+    return (getHtrState() != HTR_DISCONNECTED);
 }
 
 run_state_t DieselHeater::getRunState()
@@ -307,9 +312,8 @@ run_state_t DieselHeater::getRunState()
 const char *DieselHeater::getRunStateDesc()
 {
     run_state_t state = getRunState();
-    // Shouldn't be more than 8, but just in case
-    if(state > COOLDOWN)
-        state = COOLDOWN;
+    if(state > UKNOWN_RUN_STATE)
+        state = UKNOWN_RUN_STATE;
     
     return(run_state_strs[state]);
 }
@@ -362,40 +366,59 @@ float DieselHeater::getRequestedPumpHz()
 
 bool DieselHeater::hasError()
 {
-    return (getErrorState() != NO_ERROR);
+    return (getErrorState() > NO_ERROR);
 }
 
 error_state_t DieselHeater::getErrorState()
 {
-    if(!isConnected())
-        return DISCONNECTED; // additional state for when we can't communicate with the heater
-        
-    uint8_t res = _readTwiRegU8(ERROR_CODE_REG_ADDR);
-    
-    // only return integer if error state (0 and 1 are running states)
-    if(res < 2)
-        return NO_ERROR;
-    
-    return (error_state_t)(res - 1);
+    return (error_state_t)_readTwiRegU8(ERROR_CODE_REG_ADDR);
 }
 
 const char *DieselHeater::getErrorDesc()
 {
     error_state_t state = getErrorState();
-    // Shouldn't be more than 10, but just in case
-    if(state > DISCONNECTED)
-        state = DISCONNECTED;
+    if(state > UNKNOWN_ERROR)
+        state = UNKNOWN_ERROR;
     
     return(error_state_strs[state]);
 }
 
-/*
+error_state_t DieselHeater::getLasErrorState()
+{
+    return (error_state_t)_readTwiRegU8(LAST_ERROR_REG_ADDR);
+}
+
+const char *DieselHeater::getLastErrorDesc()
+{
+    error_state_t state = getLasErrorState();
+    if(state > UNKNOWN_ERROR)
+        state = UNKNOWN_ERROR;
+    
+    return(error_state_strs[state]);
+}
+
+uint8_t DieselHeater::getHtrState()
+{
+	return _readTwiRegU8(HTR_STATE_REG_ADDR);
+}
+ 
+uint8_t DieselHeater::getMode()
+{
+    return _readTwiRegU8(MODE_REG_ADDR);
+}
+ 
+ /*
  * Other methods
  */
  
 uint8_t DieselHeater::interfaceReady()
 {
     return _readTwiRegU8(STATUS_A_REG_ADDR) & (1 << STATUS_A_READY);
+}
+
+uint8_t DieselHeater::getLastResetReason()
+{
+    return (_readTwiRegU8(STATUS_A_REG_ADDR) >> STATUS_A_RESET_REASON) & 0x7;
 }
 
 /*
