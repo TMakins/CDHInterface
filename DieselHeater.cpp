@@ -93,11 +93,11 @@ const char* error_state_strs[UNKNOWN_ERROR] = {
 	"Pump runaway"
 };
 
-enum heater_states = {
+enum heater_states {
 	HTR_DISCONNECTED,
 	HTR_OFF,
 	HTR_ON,
-}
+};
 
 DieselHeater::DieselHeater()
 {
