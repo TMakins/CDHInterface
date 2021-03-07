@@ -383,14 +383,14 @@ const char *DieselHeater::getErrorDesc()
     return(error_state_strs[state]);
 }
 
-error_state_t DieselHeater::getLasErrorState()
+error_state_t DieselHeater::getLastErrorState()
 {
     return (error_state_t)_readTwiRegU8(LAST_ERROR_REG_ADDR);
 }
 
 const char *DieselHeater::getLastErrorDesc()
 {
-    error_state_t state = getLasErrorState();
+    error_state_t state = getLastErrorState();
     if(state > UNKNOWN_ERROR)
         state = UNKNOWN_ERROR;
     
