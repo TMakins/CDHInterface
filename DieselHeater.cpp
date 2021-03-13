@@ -54,8 +54,9 @@
 #define REQUESTED_PUMP_HZ_REG_ADDR  31
 #define ERROR_CODE_REG_ADDR         32
 #define LAST_ERROR_REG_ADDR         33
-#define CONFIG_A_REG_ADDR           34
-#define STATUS_A_REG_ADDR           35
+#define VERSION_REG_ADDR			34
+#define CONFIG_A_REG_ADDR           35
+#define STATUS_A_REG_ADDR           36
 
 // Status A register, currently just has a ready bit
 #define STATUS_A_READY  		0 // bit position for ready bit in status register
@@ -416,9 +417,35 @@ uint8_t DieselHeater::interfaceReady()
     return _readTwiRegU8(STATUS_A_REG_ADDR) & (1 << STATUS_A_READY);
 }
 
+uint8_t DieselHeater::getInterfaceVersion()
+{
+    return _readTwiRegU8(VERSION_REG_ADDR);
+}
+
+// Last reason CDH interface reset, ideally should only ever be power on reset!
 uint8_t DieselHeater::getLastResetReason()
 {
     return (_readTwiRegU8(STATUS_A_REG_ADDR) >> STATUS_A_RESET_REASON) & 0x7;
+}
+
+const char *DieselHeater::getLastResetReasonStr()
+{
+    uint8_t rst = getLastResetReason();
+	switch(rst)
+	{
+		case 0:
+		return "Power on reset";
+		case 1:
+		return "Brown out reset";
+		case 2:
+		return "Reset pin";
+		case 3:
+		return "Watchdog reset";
+		case 4:
+		return "Software reset";
+		case 5:
+		return "UDPI reset";
+	}
 }
 
 /*

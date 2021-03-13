@@ -127,8 +127,9 @@ class DieselHeater
         // Other methods
         uint8_t interfaceReady();
 		uint8_t getLastResetReason();
+        const char *getLastResetReasonStr();
     
-    protected:
+    //protected:
         TwoWire *_twi;
         void _writeTwiRegU8(uint8_t addr, uint8_t data);
         void _writeTwiRegU16(uint8_t addr, uint16_t data);
